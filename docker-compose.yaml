@@ -1,0 +1,19 @@
+services:
+  postgresdb:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    #stores data in a volatile memory only tmpfs, only used when testing
+    tmpfs: /var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth
+  backend-microservice:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 9876:9876
+    environment:
+      JWT_SECRET: hugesecret
+      DSN: postgres://postgres:password@postgres:5432/test
