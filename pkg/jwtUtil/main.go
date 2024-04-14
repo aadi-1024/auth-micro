@@ -8,14 +8,15 @@ import (
 )
 
 type JwtConfig struct {
-	jwtSecret string
+	jwtSecret []byte
 	expiry    time.Duration
 }
 
 func NewJwtConfig(exp time.Duration) *JwtConfig {
 	return &JwtConfig{
-		jwtSecret: os.Getenv("JWT_SECRET"),
-		expiry:    exp,
+		jwtSecret: []byte(os.Getenv("JWT_SECRET")),
+		//jwtSecret: []byte("secret"),
+		expiry: exp,
 	}
 }
 
@@ -29,7 +30,7 @@ func (j *JwtConfig) GenerateToken(uid int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, clms)
 	signedString, err := token.SignedString(j.jwtSecret)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	return signedString, nil
 }

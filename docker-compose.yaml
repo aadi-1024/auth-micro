@@ -1,5 +1,5 @@
 services:
-  postgresdb:
+  db:
     image: postgres:alpine
     ports:
       - 5432:5432
@@ -16,4 +16,5 @@ services:
       - 9876:9876
     environment:
       JWT_SECRET: hugesecret
-      DSN: postgres://postgres:password@postgres:5432/test
+      DSN: postgres://postgres:password@db:5432/auth
+    depends_on: [db]
